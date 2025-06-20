@@ -45,6 +45,13 @@ class TestExecution(BaseModel):
             return result
         return v or {}
 
+    @field_validator("path", mode="before")
+    @classmethod
+    def ensure_list_path(cls, v):
+        if isinstance(v, str):
+            return [v]
+        return v
+
     @field_validator("startTime", "endTime", mode="before")
     @classmethod
     def convert_timestamp(cls, v):
