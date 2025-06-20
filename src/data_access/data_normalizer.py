@@ -15,9 +15,12 @@ class DataNormalizer:
         data = []
 
         for test in test_executions:
+            # Ensure attributes is a dictionary
+            attributes = test.attributes if isinstance(test.attributes, dict) else {}
+
             data.append(
                 {
-                    "test_id": test.id,
+                    "test_id": str(test.id),
                     "test_name": test.name,
                     "status": test.status,
                     "start_time": datetime.fromtimestamp(test.startTime / 1000),
@@ -27,12 +30,12 @@ class DataNormalizer:
                     "duration_seconds": (
                         (test.endTime - test.startTime) / 1000 if test.endTime else None
                     ),
-                    "platform": test.attributes.get("platform", "unknown"),
-                    "owner": test.attributes.get("owner", "unknown"),
+                    "platform": attributes.get("platform", "unknown"),
+                    "owner": attributes.get("owner", "unknown"),
                     "error_message": test.issue.comment if test.issue else None,
                     "tags": ",".join(test.tags) if test.tags else "",
-                    "launch_id": test.launchId,
-                    "parent_id": test.parentId,
+                    "launch_id": str(test.launchId),
+                    "parent_id": str(test.parentId) if test.parentId else None,
                 }
             )
 
