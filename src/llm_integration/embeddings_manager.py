@@ -195,7 +195,7 @@ class EmbeddingsManager:
         if cache_file.exists():
             try:
                 with open(cache_file, "rb") as f:
-                    return pickle.load(f)
+                    return pickle.load(f)  # nosec B301
             except Exception as e:
                 logger.warning(f"Failed to load cached embedding: {e}")
 

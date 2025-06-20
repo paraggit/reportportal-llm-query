@@ -7,9 +7,10 @@ from pydantic import BaseModel, Field
 
 
 class ReportPortalConfig(BaseModel):
-    base_url: str = Field(default="http://localhost:8080")
+    base_url: str = Field(default="https://localhost:8080")
     project: str = Field(default="default_personal")
     auth_token: str = Field(default="")
+    verify_ssl: bool = Field(default=False)
 
 
 class LLMConfig(BaseModel):

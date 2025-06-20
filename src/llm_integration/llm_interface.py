@@ -3,9 +3,9 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 
 import openai
-from langchain.chat_models import ChatOpenAI
-from langchain.llms import HuggingFacePipeline, LlamaCpp
 from langchain.schema import HumanMessage, SystemMessage
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.llms import HuggingFacePipeline, LlamaCpp
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 

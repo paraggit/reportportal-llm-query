@@ -13,8 +13,7 @@ class URLValidator:
         try:
             result = urlparse(url)
             return all([result.scheme, result.netloc])
-        except Exception as e:
-            print(e)
+        except ValueError:
             return False
 
     @staticmethod

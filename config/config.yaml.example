@@ -3,6 +3,7 @@ reportportal:
   base_url: "http://localhost:8080"  # Your Report Portal URL
   project: "default_personal"         # Your project name
   auth_token: ""                      # Your API token (or use env var REPORTPORTAL_TOKEN)
+  verify_ssl: true                    # Set to false for self-signed certificates
 
 # LLM Configuration
 llm:
