@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "reportportal-llm-query"
+version = "0.1.0"
+description = "LLM-powered query interface for Report Portal test execution data"
+authors = ["Parag Kamble <kamble.parag@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.0.0"
+httpx = "^0.24.0"
+pandas = "^2.0.0"
+openai = "^1.0.0"
+langchain = "^0.1.0"
+fastapi = "^0.104.0"
+uvicorn = {extras = ["standard"], version = "^0.24.0"}
+click = "^8.1.0"
+rich = "^13.0.0"
+loguru = "^0.7.0"
+pyyaml = "^6.0"
+transformers = "^4.52.4"
+certifi = "^2025.6.15"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.1.0"
+black = "^23.0.0"
+flake8 = "^6.0.0"
+mypy = "^1.7.0"
+pre-commit = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  reportportal-llm:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REPORTPORTAL_URL=${REPORTPORTAL_URL}
+      - REPORTPORTAL_PROJECT=${REPORTPORTAL_PROJECT}
+      - REPORTPORTAL_TOKEN=${REPORTPORTAL_TOKEN}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./cache:/app/cache
+      - ./sessions:/app/sessions
+      - ./logs:/app/logs
+      - ./config:/app/config
+    restart: unless-stopped
+
+  # Optional: Local LLM server (Ollama)
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    profiles:
+      - local-llm
+
+volumes:
+  ollama_data:

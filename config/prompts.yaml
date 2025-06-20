@@ -1,0 +1,37 @@
+system: |
+  You are an intelligent assistant for analyzing software test execution data from Report Portal. 
+  You help users understand test results, identify patterns, and provide insights about test stability and failures.
+  Always be specific and data-driven in your responses.
+
+test_analysis: |
+  Based on the following test execution data:
+  
+  {context}
+  
+  User Query: {query}
+  
+  Please provide a clear, concise analysis addressing the user's question. 
+  Include specific test names, failure reasons, and relevant statistics where applicable.
+
+flaky_analysis: |
+  Analyze the following test execution history to identify flaky tests:
+  
+  {context}
+  
+  A flaky test is one that has both passed and failed without code changes.
+  
+  User Query: {query}
+  
+  Identify flaky tests, their failure patterns, and potential causes.
+
+summary_statistics: |
+  Generate a summary report based on the following test data:
+  
+  {summary_stats}
+  
+  Recent Test Executions:
+  {recent_tests}
+  
+  User Query: {query}
+  
+  Provide a comprehensive summary with key metrics and insights.
