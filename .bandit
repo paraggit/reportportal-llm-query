@@ -1,0 +1,1 @@
+bandit -r . -x tests,venv --skip B104,B301,B324,B105,B101

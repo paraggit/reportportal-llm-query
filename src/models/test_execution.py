@@ -1,5 +1,6 @@
-from typing import Optional, List, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
 
@@ -25,17 +26,17 @@ class TestExecution(BaseModel):
     tags: List[str] = Field(default_factory=list)
     issue: Optional[TestIssue] = None
     description: Optional[str] = None
-    
+
     @property
     def duration(self) -> Optional[float]:
-        """Calculate test duration in seconds"""
+        """Calculate test duration in seconds."""
         if self.endTime:
             return (self.endTime - self.startTime) / 1000.0
         return None
-    
+
     @property
     def start_datetime(self) -> datetime:
-        """Convert start time to datetime"""
+        """Convert start time to datetime."""
         return datetime.fromtimestamp(self.startTime / 1000)
 
 

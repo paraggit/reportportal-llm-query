@@ -24,6 +24,8 @@ An intelligent natural language interface for querying and analyzing test execut
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/paraggit/reportportal-llm-query.git
 cd reportportal-llm-query
+```

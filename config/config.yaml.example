@@ -12,7 +12,7 @@ llm:
   temperature: 0.7
   max_tokens: 2000
   context_length: 4096
-  
+
   # For local models (Llama/Mistral)
   # model_path: "/path/to/model.gguf"
   # gpu_layers: 0
