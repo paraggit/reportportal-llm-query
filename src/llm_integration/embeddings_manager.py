@@ -9,8 +9,8 @@ from loguru import logger
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from ..models.test_execution import TestExecution
-from ..utils.config import Config
+from src.models.test_execution import TestExecution
+from src.utils.config import Config
 
 
 class EmbeddingsManager:

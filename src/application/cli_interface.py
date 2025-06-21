@@ -8,10 +8,10 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
-from ..utils.config import Config
-from ..utils.logger import setup_logger
-from .response_generator import ResponseGenerator
-from .session_manager import SessionManager
+from src.application.response_generator import ResponseGenerator
+from src.application.session_manager import SessionManager
+from src.utils.config import Config
+from src.utils.logger import setup_logger
 
 console = Console()
 
@@ -22,16 +22,18 @@ class CLIInterface:
     def __init__(self, config_path: str = "config/config.yaml"):
         self.config = Config.from_yaml(config_path)
         setup_logger(self.config)
+
         self.response_generator = ResponseGenerator(self.config)
         self.session_manager = SessionManager(self.config)
-        self.session_id = None
+        self.session_id: Optional[str] = None
 
     async def start_interactive_session(self):
         """Start an interactive query session."""
         console.print(
             Panel.fit(
                 "[bold blue]Report Portal LLM Query Interface[/bold blue]\n"
-                "Type your questions about test executions. Type 'exit' to quit.",
+                "Type your questions about test executions.\n"
+                "Type 'exit' to quit.",
                 border_style="blue",
             )
         )
@@ -40,34 +42,28 @@ class CLIInterface:
 
         while True:
             try:
-                # Get user input
-                query = console.input("\n[bold green]Query>[/bold green] ")
+                query = console.input("\n[bold green]Query>[/bold green] ").strip()
 
-                if query.lower() in ["exit", "quit", "q"]:
+                if query.lower() in {"exit", "quit", "q"}:
                     break
 
-                if query.strip() == "":
+                if not query:
                     continue
 
-                # Process query with progress indicator
                 with Progress(
                     SpinnerColumn(),
                     TextColumn("[progress.description]{task.description}"),
                     console=console,
                 ) as progress:
                     task = progress.add_task("Processing query...", total=None)
-
                     response = await self.response_generator.generate_response(
                         query, session_id=self.session_id
                     )
-
                     progress.update(task, completed=True)
 
-                # Display response
                 console.print("\n[bold cyan]Response:[/bold cyan]")
                 console.print(Markdown(response.answer))
 
-                # Display additional metadata if available
                 if response.metadata:
                     self._display_metadata(response.metadata)
 
@@ -78,14 +74,15 @@ class CLIInterface:
                 console.print(f"\n[red]Error: {str(e)}[/red]")
 
         console.print("\n[blue]Thank you for using Report Portal LLM Query Interface![/blue]")
-        self.session_manager.close_session(self.session_id)
+        if self.session_id:
+            self.session_manager.close_session(self.session_id)
 
     def _display_metadata(self, metadata: dict):
         """Display query metadata in a formatted table."""
         if "statistics" in metadata:
             stats = metadata["statistics"]
             table = Table(title="Query Statistics", show_header=True)
-            table.add_column("Metric", style="cyan")
+            table.add_column("Metric", style="cyan", no_wrap=True)
             table.add_column("Value", style="green")
 
             for key, value in stats.items():
@@ -114,8 +111,12 @@ def cli():
 @click.option("--config", "-c", default="config/config.yaml", help="Path to configuration file")
 def interactive(config):
     """Start interactive query session."""
-    interface = CLIInterface(config)
-    asyncio.run(interface.start_interactive_session())
+    try:
+        interface = CLIInterface(config)
+        asyncio.run(interface.start_interactive_session())
+    except Exception as e:
+        console.print(f"[red]Failed to initialize interface: {str(e)}[/red]")
+        console.print(f"[yellow]Please check your configuration file: {config}[/yellow]")
 
 
 @cli.command()
@@ -123,8 +124,12 @@ def interactive(config):
 @click.option("--config", "-c", default="config/config.yaml", help="Path to configuration file")
 def query(query, config):
     """Execute a single query."""
-    interface = CLIInterface(config)
-    asyncio.run(interface.single_query(query))
+    try:
+        interface = CLIInterface(config)
+        asyncio.run(interface.single_query(query))
+    except Exception as e:
+        console.print(f"[red]Failed to execute query: {str(e)}[/red]")
+        console.print(f"[yellow]Please check your configuration file: {config}[/yellow]")
 
 
 if __name__ == "__main__":

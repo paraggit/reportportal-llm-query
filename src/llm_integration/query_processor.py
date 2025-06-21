@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 from loguru import logger
 from pydantic import BaseModel
 
-from ..models.query_models import FilterCriteria, QueryIntent, QueryType, TimeFilter
+from src.models.query_models import FilterCriteria, QueryIntent, QueryType, TimeFilter
 
 
 class QueryProcessor:

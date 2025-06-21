@@ -3,8 +3,8 @@ from typing import Any, Dict, List
 
 import yaml
 
-from ..models.query_models import QueryIntent
-from ..utils.config import Config
+from src.models.query_models import QueryIntent
+from src.utils.config import Config
 
 
 class PromptEngineer:

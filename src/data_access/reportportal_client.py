@@ -8,8 +8,8 @@ import httpx
 from loguru import logger
 from pydantic import BaseModel, Field
 
-from ..models.test_execution import Launch, TestExecution
-from ..utils.config import Config
+from src.models.test_execution import Launch, TestExecution
+from src.utils.config import Config
 
 
 class ReportPortalClient:

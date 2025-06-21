@@ -3,7 +3,7 @@ from pathlib import Path
 
 from loguru import logger
 
-from .config import Config
+from src.utils.config import Config
 
 
 def setup_logger(config: Config):
