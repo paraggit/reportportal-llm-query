@@ -20,8 +20,13 @@ class CLIInterface:
     """Command-line interface for the Report Portal LLM Query system."""
 
     def __init__(self, config_path: str = "config/config.yaml"):
+        # Load configuration from YAML file
         self.config = Config.from_yaml(config_path)
+
+        # Setup logger with the loaded config
         setup_logger(self.config)
+
+        # Pass the config object (not config_path) to other components
         self.response_generator = ResponseGenerator(self.config)
         self.session_manager = SessionManager(self.config)
         self.session_id = None
@@ -78,7 +83,8 @@ class CLIInterface:
                 console.print(f"\n[red]Error: {str(e)}[/red]")
 
         console.print("\n[blue]Thank you for using Report Portal LLM Query Interface![/blue]")
-        self.session_manager.close_session(self.session_id)
+        if self.session_id:
+            self.session_manager.close_session(self.session_id)
 
     def _display_metadata(self, metadata: dict):
         """Display query metadata in a formatted table."""
@@ -114,8 +120,12 @@ def cli():
 @click.option("--config", "-c", default="config/config.yaml", help="Path to configuration file")
 def interactive(config):
     """Start interactive query session."""
-    interface = CLIInterface(config)
-    asyncio.run(interface.start_interactive_session())
+    try:
+        interface = CLIInterface(config)
+        asyncio.run(interface.start_interactive_session())
+    except Exception as e:
+        console.print(f"[red]Failed to initialize interface: {str(e)}[/red]")
+        console.print(f"[yellow]Please check your configuration file: {config}[/yellow]")
 
 
 @cli.command()
@@ -123,8 +133,12 @@ def interactive(config):
 @click.option("--config", "-c", default="config/config.yaml", help="Path to configuration file")
 def query(query, config):
     """Execute a single query."""
-    interface = CLIInterface(config)
-    asyncio.run(interface.single_query(query))
+    try:
+        interface = CLIInterface(config)
+        asyncio.run(interface.single_query(query))
+    except Exception as e:
+        console.print(f"[red]Failed to execute query: {str(e)}[/red]")
+        console.print(f"[yellow]Please check your configuration file: {config}[/yellow]")
 
 
 if __name__ == "__main__":
