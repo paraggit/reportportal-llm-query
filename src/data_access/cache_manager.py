@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 
 from loguru import logger
 
-from ..utils.config import Config
+from src.utils.config import Config
 
 
 class CacheManager:

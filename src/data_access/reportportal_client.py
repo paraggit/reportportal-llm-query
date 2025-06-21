@@ -9,11 +9,7 @@ from loguru import logger
 from pydantic import BaseModel, Field
 
 from src.models.test_execution import Launch, TestExecution
-
-# from ..models.test_execution import Launch, TestExecution
 from src.utils.config import Config
-
-# from ..utils.config import Config
 
 
 class ReportPortalClient:

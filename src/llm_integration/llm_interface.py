@@ -9,7 +9,7 @@ from langchain_community.llms import HuggingFacePipeline, LlamaCpp
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-from ..utils.config import Config
+from src.utils.config import Config
 
 
 class LLMProvider(Enum):

@@ -8,10 +8,10 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
-from ..utils.config import Config
-from ..utils.logger import setup_logger
-from .response_generator import ResponseGenerator
-from .session_manager import SessionManager
+from src.application.response_generator import ResponseGenerator
+from src.application.session_manager import SessionManager
+from src.utils.config import Config
+from src.utils.logger import setup_logger
 
 console = Console()
 
@@ -20,23 +20,20 @@ class CLIInterface:
     """Command-line interface for the Report Portal LLM Query system."""
 
     def __init__(self, config_path: str = "config/config.yaml"):
-        # Load configuration from YAML file
         self.config = Config.from_yaml(config_path)
-
-        # Setup logger with the loaded config
         setup_logger(self.config)
 
-        # Pass the config object (not config_path) to other components
         self.response_generator = ResponseGenerator(self.config)
         self.session_manager = SessionManager(self.config)
-        self.session_id = None
+        self.session_id: Optional[str] = None
 
     async def start_interactive_session(self):
         """Start an interactive query session."""
         console.print(
             Panel.fit(
                 "[bold blue]Report Portal LLM Query Interface[/bold blue]\n"
-                "Type your questions about test executions. Type 'exit' to quit.",
+                "Type your questions about test executions.\n"
+                "Type 'exit' to quit.",
                 border_style="blue",
             )
         )
@@ -45,34 +42,28 @@ class CLIInterface:
 
         while True:
             try:
-                # Get user input
-                query = console.input("\n[bold green]Query>[/bold green] ")
+                query = console.input("\n[bold green]Query>[/bold green] ").strip()
 
-                if query.lower() in ["exit", "quit", "q"]:
+                if query.lower() in {"exit", "quit", "q"}:
                     break
 
-                if query.strip() == "":
+                if not query:
                     continue
 
-                # Process query with progress indicator
                 with Progress(
                     SpinnerColumn(),
                     TextColumn("[progress.description]{task.description}"),
                     console=console,
                 ) as progress:
                     task = progress.add_task("Processing query...", total=None)
-
                     response = await self.response_generator.generate_response(
                         query, session_id=self.session_id
                     )
-
                     progress.update(task, completed=True)
 
-                # Display response
                 console.print("\n[bold cyan]Response:[/bold cyan]")
                 console.print(Markdown(response.answer))
 
-                # Display additional metadata if available
                 if response.metadata:
                     self._display_metadata(response.metadata)
 
@@ -91,7 +82,7 @@ class CLIInterface:
         if "statistics" in metadata:
             stats = metadata["statistics"]
             table = Table(title="Query Statistics", show_header=True)
-            table.add_column("Metric", style="cyan")
+            table.add_column("Metric", style="cyan", no_wrap=True)
             table.add_column("Value", style="green")
 
             for key, value in stats.items():

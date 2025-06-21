@@ -5,13 +5,13 @@ from typing import AsyncGenerator, List, Optional
 from loguru import logger
 from pydantic import BaseModel
 
-from ..data_access.cache_manager import CacheManager
-from ..data_access.data_normalizer import DataNormalizer
-from ..data_access.reportportal_client import ReportPortalClient
-from ..llm_integration.llm_interface import LLMInterface
-from ..llm_integration.prompt_engineer import PromptEngineer
-from ..llm_integration.query_processor import QueryProcessor
-from ..utils.config import Config
+from src.data_access.cache_manager import CacheManager
+from src.data_access.data_normalizer import DataNormalizer
+from src.data_access.reportportal_client import ReportPortalClient
+from src.llm_integration.llm_interface import LLMInterface
+from src.llm_integration.prompt_engineer import PromptEngineer
+from src.llm_integration.query_processor import QueryProcessor
+from src.utils.config import Config
 
 
 class QueryResponse(BaseModel):

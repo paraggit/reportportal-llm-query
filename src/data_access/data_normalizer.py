@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from ..models.test_execution import Launch, TestExecution
+from src.models.test_execution import Launch, TestExecution
 
 
 class DataNormalizer:

@@ -6,9 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
-from ..utils.config import Config
-from .response_generator import ResponseGenerator
-from .session_manager import SessionManager
+from src.application.response_generator import ResponseGenerator
+from src.application.session_manager import SessionManager
+from src.utils.config import Config
 
 app = FastAPI(title="Report Portal LLM Query API")
 
